@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.1.xsd  
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-4.1.xsd  
+        http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+
+	<!-- <context:property-placeholder location="classpath:jdbc.properties" 
+		/> -->
+
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="name" value="defaultdb"></property>
+		<property name="driverClassName">
+			<value>${jdbc.driver}</value>
+		</property>
+		<property name="url">
+			<value>${jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc.password}</value>
+		</property>
+		<!--配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${jdbc.minPoolSize}" />
+		<property name="minIdle" value="${jdbc.minPoolSize}" />
+		<property name="maxActive" value="${jdbc.maxPoolSize}" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="testWhileIdle" value="true" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="${ps.cache}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="${ps.maxcache}" />
+		<property name="validationQuery" value="SELECT 1 FROM DUAL" />
+		<!-- 这里配置提交方式，默认就是TRUE，可以不用配置 -->
+		<property name="defaultAutoCommit" value="true" />
+		<property name="filters" value="stat" />
+		<property name="proxyFilters">
+			<list>
+				<ref bean="logFilter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="elefenceDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="name" value="elefencedb"></property>
+		<property name="driverClassName">
+			<value>${elefence.jdbc.driver}</value>
+		</property>
+		<property name="url">
+			<value>${elefence.jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${elefence.jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${elefence.jdbc.password}</value>
+		</property>
+		<!--配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${elefence.jdbc.minPoolSize}" />
+		<property name="minIdle" value="${elefence.jdbc.minPoolSize}" />
+		<property name="maxActive" value="${elefence.jdbc.maxPoolSize}" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="testWhileIdle" value="true" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="${elefence.ps.cache}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="${elefence.ps.maxcache}" />
+		<property name="validationQuery" value="SELECT 1 FROM DUAL" />
+		<!-- 这里配置提交方式，默认就是TRUE，可以不用配置 -->
+		<property name="defaultAutoCommit" value="true" />
+		<property name="filters" value="stat" />
+		<property name="proxyFilters">
+			<list>
+				<ref bean="logFilter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="pickdataDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="name" value="pickdatadb"></property>
+		<property name="driverClassName">
+			<value>${pickdata.jdbc.driver}</value>
+		</property>
+		<property name="url">
+			<value>${pickdata.jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${pickdata.jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${pickdata.jdbc.password}</value>
+		</property>
+		<!--配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${pickdata.jdbc.minPoolSize}" />
+		<property name="minIdle" value="${pickdata.jdbc.minPoolSize}" />
+		<property name="maxActive" value="${pickdata.jdbc.maxPoolSize}" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="testWhileIdle" value="true" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="${pickdata.ps.cache}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="${pickdata.ps.maxcache}" />
+		<property name="validationQuery" value="SELECT 1 FROM DUAL" />
+		<!-- 这里配置提交方式，默认就是TRUE，可以不用配置 -->
+		<property name="defaultAutoCommit" value="true" />
+		<property name="filters" value="stat" />
+		<property name="proxyFilters">
+			<list>
+				<ref bean="logFilter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tmDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="name" value="tmdb"></property>
+		<property name="driverClassName">
+			<value>${tm.jdbc.driver}</value>
+		</property>
+		<property name="url">
+			<value>${tm.jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${tm.jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${tm.jdbc.password}</value>
+		</property>
+		<!--配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${tm.jdbc.minPoolSize}" />
+		<property name="minIdle" value="${tm.jdbc.minPoolSize}" />
+		<property name="maxActive" value="${tm.jdbc.maxPoolSize}" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="testWhileIdle" value="true" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="${tm.ps.cache}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="${tm.ps.maxcache}" />
+		<property name="validationQuery" value="SELECT 1 FROM DUAL" />
+		<!-- 这里配置提交方式，默认就是TRUE，可以不用配置 -->
+		<property name="defaultAutoCommit" value="true" />
+		<property name="filters" value="stat" />
+		<property name="proxyFilters">
+			<list>
+				<ref bean="logFilter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="brDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="name" value="brdb"></property>
+		<property name="driverClassName">
+			<value>${br.jdbc.driver}</value>
+		</property>
+		<property name="url">
+			<value>${br.jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${br.jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${br.jdbc.password}</value>
+		</property>
+		<!--配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${br.jdbc.minPoolSize}" />
+		<property name="minIdle" value="${br.jdbc.minPoolSize}" />
+		<property name="maxActive" value="${br.jdbc.maxPoolSize}" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="testWhileIdle" value="true" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="${br.ps.cache}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="${br.ps.maxcache}" />
+		<property name="validationQuery" value="SELECT 1 FROM DUAL" />
+		<!-- 这里配置提交方式，默认就是TRUE，可以不用配置 -->
+		<property name="defaultAutoCommit" value="true" />
+		<property name="filters" value="stat" />
+		<property name="proxyFilters">
+			<list>
+				<ref bean="logFilter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="identityDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="name" value="identitydb"></property>
+		<property name="driverClassName">
+			<value>${identity.jdbc.driver}</value>
+		</property>
+		<property name="url">
+			<value>${identity.jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${identity.jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${identity.jdbc.password}</value>
+		</property>
+		<!--配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${identity.jdbc.minPoolSize}" />
+		<property name="minIdle" value="${identity.jdbc.minPoolSize}" />
+		<property name="maxActive" value="${identity.jdbc.maxPoolSize}" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="testWhileIdle" value="true" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="${identity.ps.cache}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="${identity.ps.maxcache}" />
+		<property name="validationQuery" value="SELECT 1 FROM DUAL" />
+		<!-- 这里配置提交方式，默认就是TRUE，可以不用配置 -->
+		<property name="defaultAutoCommit" value="true" />
+		<property name="filters" value="stat" />
+		<property name="proxyFilters">
+			<list>
+				<ref bean="logFilter" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="mppDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close" lazy-init="true" >
+		<property name="name" value="mppdb"></property>
+		<property name="driverClassName">
+			<value>${mpp.jdbc.driver}</value>
+		</property>
+		<property name="url">
+			<value>${mpp.jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${mpp.jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${mpp.jdbc.password}</value>
+		</property>
+		<!--配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${mpp.jdbc.minPoolSize}" />
+		<property name="minIdle" value="${mpp.jdbc.minPoolSize}" />
+		<property name="maxActive" value="${mpp.jdbc.maxPoolSize}" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="testWhileIdle" value="true" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="${mpp.ps.cache}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="${mpp.ps.maxcache}" />
+		<property name="validationQuery" value="SELECT VERSION()" />
+		<!-- 这里配置提交方式，默认就是TRUE，可以不用配置 -->
+		<property name="defaultAutoCommit" value="true" />
+		<property name="filters" value="stat" />
+		<property name="proxyFilters">
+			<list>
+				<ref bean="logFilter" />
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="logFilter" class="com.alibaba.druid.filter.logging.Log4jFilter">
+	</bean>
+
+</beans>  
